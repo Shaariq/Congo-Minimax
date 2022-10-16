@@ -1679,6 +1679,93 @@ vector<string> superpawnMoves(int row, int col, array<array<string, 7>, 7> board
     }
 }
 
+vector<string> allMoves(array<array<string, 7>, 7> board)
+{
+    vector<string> moves;
+
+    // check which color's turn it is
+    // loop through the board and find all the pieces of that color
+    // for each piece, call the appropriate function to get the moves
+    // append the moves to the vector
+
+    if (turnToPlay == "white")
+    {
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board[i].size(); j++)
+            {
+                if (isWhite(board[i][j]))
+                {
+                    if (board[i][j] == "P")
+                    {
+                        vector<string> pawnMovesArr = pawnMoves(i, j, board, "white");
+                        moves.insert(moves.end(), pawnMovesArr.begin(), pawnMovesArr.end());
+                    }
+                    else if (board[i][j] == "S")
+                    {
+                        vector<string> superpawnMovesArr = superpawnMoves(i, j, board, "white");
+                        moves.insert(moves.end(), superpawnMovesArr.begin(), superpawnMovesArr.end());
+                    }
+                    else if (board[i][j] == "Z")
+                    {
+                        vector<string> zebraMovesArr = zebraMoves(i, j, board, "white");
+                        moves.insert(moves.end(), zebraMovesArr.begin(), zebraMovesArr.end());
+                    }
+                    else if (board[i][j] == "G")
+                    {
+                        vector<string> giraffeMovesArr = giraffeMoves(i, j, board, "white");
+                        moves.insert(moves.end(), giraffeMovesArr.begin(), giraffeMovesArr.end());
+                    }
+                    else if (board[i][j] == "L")
+                    {
+                        vector<string> lionMovesArr = lionMoves(i, j, board, "white");
+                        moves.insert(moves.end(), lionMovesArr.begin(), lionMovesArr.end());
+                    }
+                }
+            }
+        }
+    }
+    else if (turnToPlay == "black")
+    {
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board[i].size(); j++)
+            {
+                if (isBlack(board[i][j]))
+                {
+                    if (board[i][j] == "p")
+                    {
+                        vector<string> pawnMovesArr = pawnMoves(i, j, board, "black");
+                        moves.insert(moves.end(), pawnMovesArr.begin(), pawnMovesArr.end());
+                    }
+                    else if (board[i][j] == "s")
+                    {
+                        vector<string> superpawnMovesArr = superpawnMoves(i, j, board, "black");
+                        moves.insert(moves.end(), superpawnMovesArr.begin(), superpawnMovesArr.end());
+                    }
+                    else if (board[i][j] == "z")
+                    {
+                        vector<string> zebraMovesArr = zebraMoves(i, j, board, "black");
+                        moves.insert(moves.end(), zebraMovesArr.begin(), zebraMovesArr.end());
+                    }
+                    else if (board[i][j] == "g")
+                    {
+                        vector<string> giraffeMovesArr = giraffeMoves(i, j, board, "black");
+                        moves.insert(moves.end(), giraffeMovesArr.begin(), giraffeMovesArr.end());
+                    }
+                    else if (board[i][j] == "l")
+                    {
+                        vector<string> lionMovesArr = lionMoves(i, j, board, "black");
+                        moves.insert(moves.end(), lionMovesArr.begin(), lionMovesArr.end());
+                    }
+                }
+            }
+        }
+    }
+
+    return moves;
+}
+
 int evaluation(array<array<string, 7>, 7> board)
 {
     int score = 0;
@@ -1759,6 +1846,20 @@ int evaluation(array<array<string, 7>, 7> board)
             return -score;
         }
     }
+}
+
+// Here we will implement a minimax search without alpha-beta pruning
+// We will search to a depth of 2
+int minimax(array<array<string, 7>, 7> board, int depth)
+{
+    int currScore = evaluation(board);
+    if (currScore == 0 || currScore == 10000 || currScore == -10000 || depth <= 0)
+    {
+        return currScore;
+    }
+
+    int value = -10000000;
+
 }
 
 int main()
