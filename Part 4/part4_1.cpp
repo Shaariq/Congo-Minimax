@@ -1683,8 +1683,8 @@ int evaluation(array<array<string, 7>, 7> board)
 {
     int score = 0;
 
-    int blackLion;
-    int whiteLion;
+    int blackLion = 0;
+    int whiteLion = 0;
     int whitePieces = 0;
     int blackPieces = 0;
 
@@ -1734,6 +1734,9 @@ int evaluation(array<array<string, 7>, 7> board)
             }
         }
     }
+
+    cout << "This is the black lion value: " << blackLion << endl;
+    cout << "This is the white lion value: " << whiteLion << endl;
 
     // check if there is only a black and white lion on the board
     if (blackLion == 1 && whiteLion == 1 && whitePieces == 0 && blackPieces == 0)
