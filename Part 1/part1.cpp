@@ -353,6 +353,26 @@ bool isWhite(string piece)
     }
 }
 
+// function that returns a vector of strings in alphabetical order
+vector<string> sortVector(vector<string> vectorToSort)
+{
+    // sort the vector manually without using the sort function
+    for (int i = 0; i < vectorToSort.size(); i++)
+    {
+        for (int j = i + 1; j < vectorToSort.size(); j++)
+        {
+            if (vectorToSort[i] > vectorToSort[j])
+            {
+                string tmp = vectorToSort[i];
+                vectorToSort[i] = vectorToSort[j];
+                vectorToSort[j] = tmp;
+            }
+        }
+    }
+
+    return vectorToSort;
+}
+
 void outputGameState(array<array<string, 7>, 7> board)
 {
     // initialize a vector for each piece 
@@ -446,22 +466,22 @@ void outputGameState(array<array<string, 7>, 7> board)
     }
 
     // alphabetize the vectors
-    sort(whitePawn.begin(), whitePawn.end());
-    sort(blackPawn.begin(), blackPawn.end());
-    sort(whiteSuperPawn.begin(), whiteSuperPawn.end());
-    sort(blackSuperPawn.begin(), blackSuperPawn.end());
-    sort(whiteGiraffe.begin(), whiteGiraffe.end());
-    sort(blackGiraffe.begin(), blackGiraffe.end());
-    sort(whiteMonkey.begin(), whiteMonkey.end());
-    sort(blackMonkey.begin(), blackMonkey.end());
-    sort(whiteElephant.begin(), whiteElephant.end());
-    sort(blackElephant.begin(), blackElephant.end());
-    sort(whiteLion.begin(), whiteLion.end());
-    sort(blackLion.begin(), blackLion.end());
-    sort(whiteCrocodile.begin(), whiteCrocodile.end());
-    sort(blackCrocodile.begin(), blackCrocodile.end());
-    sort(whiteZebra.begin(), whiteZebra.end());
-    sort(blackZebra.begin(), blackZebra.end());
+    whitePawn = sortVector(whitePawn);
+    blackPawn = sortVector(blackPawn);
+    whiteSuperPawn = sortVector(whiteSuperPawn);
+    blackSuperPawn = sortVector(blackSuperPawn);
+    whiteGiraffe = sortVector(whiteGiraffe);
+    blackGiraffe = sortVector(blackGiraffe);
+    whiteMonkey = sortVector(whiteMonkey);
+    blackMonkey = sortVector(blackMonkey);
+    whiteElephant = sortVector(whiteElephant);
+    blackElephant = sortVector(blackElephant);
+    whiteLion = sortVector(whiteLion);
+    blackLion = sortVector(blackLion);
+    whiteCrocodile = sortVector(whiteCrocodile);
+    blackCrocodile = sortVector(blackCrocodile);
+    whiteZebra = sortVector(whiteZebra);
+    blackZebra = sortVector(blackZebra);
 
     // output the status of the board
     cout << "White Pawn: ";

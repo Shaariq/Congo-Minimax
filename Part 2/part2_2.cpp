@@ -464,105 +464,76 @@ vector<string> whiteLionMoves(int row, int col, array<array<string, 7>, 7> board
         }
     }
 
-    // a lion may jump across the river to capture a black lion
-    // if (row == 4 && 2 <= col && col <= 4)
-    // {
-    //     if (board[2][2] == blackLionToken)
-    //     {
-    //         moves.push_back(convertIndexToColumn(2) + convertIndexToRow(2));
-    //     }
-    //     else if (board[2][3] == blackLionToken)
-    //     {
-    //         moves.push_back(convertIndexToColumn(3) + convertIndexToRow(2));
-    //     }
-    //     else if (board[2][4] == blackLionToken)
-    //     {
-    //         moves.push_back(convertIndexToColumn(4) + convertIndexToRow(2));
-    //     }
-    // }
-    
-    // a lion may jump across the river if it can capture the black lion
-    // either in a straight line or diagonally
-
-    // first check if the white lion is in line with the black lion
-    // if it is, then check if there is a piece in between the white lion and the black lion
-    // if there is no piece in between, then the white lion can jump across the river to capture the black lion
+    // a white lion can capture a black lion if they are on the same column
     if (board[0][col] == blackLionToken || board[1][col] == blackLionToken || board[2][col] == blackLionToken)
     {
-        if (board[0][col] == blackLionToken)
+        if (board[0][col] == blackLionToken) 
         {
-            if (board[1][col] == " " && board[2][col] == " ")
+            bool canJump = true;
+            for (int i = 1; i < row; i++)
+            {
+                if (board[i][col] != " ")
+                {
+                    canJump = false;
+                }
+            }
+            if (canJump)
             {
                 moves.push_back(convertIndexToColumn(col) + convertIndexToRow(0));
             }
         }
-        else if (board[1][col] == blackLionToken)
+        if (board[1][col] == blackLionToken) 
         {
-            if (board[0][col] == " " && board[2][col] == " ")
+            bool canJump = true;
+            for (int i = 2; i < row; i++)
+            {
+                if (board[i][col] != " ")
+                {
+                    canJump = false;
+                }
+            }
+            if (canJump)
             {
                 moves.push_back(convertIndexToColumn(col) + convertIndexToRow(1));
             }
         }
-        else if (board[2][col] == blackLionToken)
+        if (board[2][col] == blackLionToken) 
         {
-            if (board[0][col] == " " && board[1][col] == " ")
+            bool canJump = true;
+            for (int i = 3; i < row; i++)
+            {
+                if (board[i][col] != " ")
+                {
+                    canJump = false;
+                }
+            }
+            if (canJump)
             {
                 moves.push_back(convertIndexToColumn(col) + convertIndexToRow(2));
             }
         }
     }
 
-    // check if the lion can capture the black lion diagonally
-    // if it can, then check if there is a piece in between the white lion and the black lion
-    // if there is no piece in between, then the white lion can jump across the river to capture the black lion
-    if (board[0][col - 1] == blackLionToken || board[1][col - 1] == blackLionToken || board[2][col - 1] == blackLionToken)
+    
+    // if a white lion is on row 4, column 2 and a black lion is on row 2, column 4
+    // then the white lion can jump across the river to capture the black lion
+    if (row == 4 && col == 2 && board[2][4] == blackLionToken)
     {
-        if (board[0][col - 1] == blackLionToken)
+        // make sure there is no piece in between the white lion and the black lion
+        if (board[3][3] == " ")
         {
-            if (board[1][col - 1] == " " && board[2][col - 1] == " ")
-            {
-                moves.push_back(convertIndexToColumn(col - 1) + convertIndexToRow(0));
-            }
-        }
-        else if (board[1][col - 1] == blackLionToken)
-        {
-            if (board[0][col - 1] == " " && board[2][col - 1] == " ")
-            {
-                moves.push_back(convertIndexToColumn(col - 1) + convertIndexToRow(1));
-            }
-        }
-        else if (board[2][col - 1] == blackLionToken)
-        {
-            if (board[0][col - 1] == " " && board[1][col - 1] == " ")
-            {
-                moves.push_back(convertIndexToColumn(col - 1) + convertIndexToRow(2));
-            }
+            moves.push_back(convertIndexToColumn(4) + convertIndexToRow(2));
         }
     }
 
-    // check the other diagonal 
-    if (board[0][col + 1] == blackLionToken || board[1][col + 1] == blackLionToken || board[2][col + 1] == blackLionToken)
+    // if a white lion is on row 4, column 4 and a black lion is on row 2, column 2
+    // then the white lion can jump across the river to capture the black lion
+    if (row == 4 && col == 4 && board[2][2] == blackLionToken)
     {
-        if (board[0][col + 1] == blackLionToken)
+        // make sure there is no piece in between the white lion and the black lion
+        if (board[3][3] == " ")
         {
-            if (board[1][col + 1] == " " && board[2][col + 1] == " ")
-            {
-                moves.push_back(convertIndexToColumn(col + 1) + convertIndexToRow(0));
-            }
-        }
-        else if (board[1][col + 1] == blackLionToken)
-        {
-            if (board[0][col + 1] == " " && board[2][col + 1] == " ")
-            {
-                moves.push_back(convertIndexToColumn(col + 1) + convertIndexToRow(1));
-            }
-        }
-        else if (board[2][col + 1] == blackLionToken)
-        {
-            if (board[0][col + 1] == " " && board[1][col + 1] == " ")
-            {
-                moves.push_back(convertIndexToColumn(col + 1) + convertIndexToRow(2));
-            }
+            moves.push_back(convertIndexToColumn(2) + convertIndexToRow(2));
         }
     }
 
@@ -680,77 +651,79 @@ vector<string> blackLionMoves(int row, int col, array<array<string, 7>, 7> board
         }
     }
 
-    // a lion may jump across the river to capture a white lion
-    // if (row == 2 && 2 <= col && col <= 4)
-    // {
-    //     if (board[4][2] == whiteLionToken)
-    //     {
-    //         moves.push_back(convertIndexToColumn(2) + convertIndexToRow(4));
-    //     }
-    //     else if (board[4][3] == whiteLionToken)
-    //     {
-    //         moves.push_back(convertIndexToColumn(3) + convertIndexToRow(4));
-    //     }
-    //     else if (board[4][4] == whiteLionToken)
-    //     {
-    //         moves.push_back(convertIndexToColumn(4) + convertIndexToRow(4));
-    //     }
-    // }
-
-    // a lion may jump across the river to capture a white lion
-    if (board[6][col] == whiteLionToken || board[5][col] == whiteLionToken || board[4][col] == whiteLionToken) {
-        if (board[6][col] == whiteLionToken) {
-            if (board[5][col] == " " && board[4][col] == " ") {
+    // if a black lion and white lion are in the same column
+    // then the black lion can jump across the river to capture the white lion
+    if (board[6][col] == whiteLionToken || board[5][col] == whiteLionToken || board[4][col] == whiteLionToken)
+    {
+        if (board[6][col] == whiteLionToken)
+        {
+            // make sure every block between the two lions are empty
+            bool canJump = true;
+            for (int i = 5; i > row; i--)
+            {
+                if (board[i][col] != " ")
+                {
+                    canJump = false;
+                }
+            }
+            if (canJump)
+            {
                 moves.push_back(convertIndexToColumn(col) + convertIndexToRow(6));
             }
         }
-        else if (board[5][col] == whiteLionToken) {
-            if (board[4][col] == " " && board[6][col] == " ") {
+        if (board[5][col] == whiteLionToken)
+        {
+            // make sure every block between the two lions are empty
+            bool canJump = true;
+            for (int i = 4; i > row; i--)
+            {
+                if (board[i][col] != " ")
+                {
+                    canJump = false;
+                }
+            }
+            if (canJump)
+            {
                 moves.push_back(convertIndexToColumn(col) + convertIndexToRow(5));
             }
         }
-        else if (board[4][col] == whiteLionToken) {
-            if (board[5][col] == " " && board[6][col] == " ") {
+        if (board[4][col] == whiteLionToken)
+        {
+            // make sure every block between the two lions are empty
+            bool canJump = true;
+            for (int i = 3; i > row; i--)
+            {
+                if (board[i][col] != " ")
+                {
+                    canJump = false;
+                }
+            }
+            if (canJump)
+            {
                 moves.push_back(convertIndexToColumn(col) + convertIndexToRow(4));
             }
         }
     }
-
-    // check diagonal for capture
-    if (board[6][col - 1] == whiteLionToken || board[5][col - 1] == whiteLionToken || board[4][col - 1] == whiteLionToken) {
-        if (board[6][col - 1] == whiteLionToken) {
-            if (board[5][col - 1] == " " && board[4][col - 1] == " ") {
-                moves.push_back(convertIndexToColumn(col - 1) + convertIndexToRow(6));
-            }
-        }
-        else if (board[5][col - 1] == whiteLionToken) {
-            if (board[4][col - 1] == " " && board[6][col - 1] == " ") {
-                moves.push_back(convertIndexToColumn(col - 1) + convertIndexToRow(5));
-            }
-        }
-        else if (board[4][col - 1] == whiteLionToken) {
-            if (board[5][col - 1] == " " && board[6][col - 1] == " ") {
-                moves.push_back(convertIndexToColumn(col - 1) + convertIndexToRow(4));
-            }
+    
+    // if a black lion is at row 2, column 2 and a white lion is at row 4, column 4
+    // then the black lion may jump to row 4, column 4
+    if (row == 2 && col == 2 && board[4][4] == whiteLionToken)
+    {
+        // make sure there are no pieces in the way
+        if (board[3][3] == " ")
+        {
+            moves.push_back(convertIndexToColumn(4) + convertIndexToRow(4));
         }
     }
 
-    // check other diagonal
-    if (board[6][col + 1] == whiteLionToken || board[5][col + 1] == whiteLionToken || board[4][col + 1] == whiteLionToken) {
-        if (board[6][col + 1] == whiteLionToken) {
-            if (board[5][col + 1] == " " && board[4][col + 1] == " ") {
-                moves.push_back(convertIndexToColumn(col + 1) + convertIndexToRow(6));
-            }
-        }
-        else if (board[5][col + 1] == whiteLionToken) {
-            if (board[4][col + 1] == " " && board[6][col + 1] == " ") {
-                moves.push_back(convertIndexToColumn(col + 1) + convertIndexToRow(5));
-            }
-        }
-        else if (board[4][col + 1] == whiteLionToken) {
-            if (board[5][col + 1] == " " && board[6][col + 1] == " ") {
-                moves.push_back(convertIndexToColumn(col + 1) + convertIndexToRow(4));
-            }
+    // if a black lion is at row 2, column 4 and a white lion is at row 4, column 2
+    // then the black lion may jump to row 4, column 2
+    if (row == 2 && col == 4 && board[4][2] == whiteLionToken)
+    {
+        // make sure there are no pieces in the way
+        if (board[3][3] == " ")
+        {
+            moves.push_back(convertIndexToColumn(2) + convertIndexToRow(4));
         }
     }
 
@@ -1673,14 +1646,30 @@ int main()
             }
         }
         // sort moves alphabetically
-        sort(moves.begin(), moves.end());
-
-        // print moves
+        // sort(moves.begin(), moves.end());
+        // do this manually 
         for (int i = 0; i < moves.size(); i++)
         {
-            cout << moves[i] << " ";
+            for (int j = i + 1; j < moves.size(); j++)
+            {
+                if (moves[i] > moves[j])
+                {
+                    string temp = moves[i];
+                    moves[i] = moves[j];
+                    moves[j] = temp;
+                }
+            }
         }
-        cout << endl;
+
+        // print moves without an extra space at the end
+        for (int i = 0; i < moves.size(); i++)
+        {
+            cout << moves[i];
+            if (i != moves.size() - 1)
+            {
+                cout << " ";
+            }
+        }
     }
 
     return 0;
