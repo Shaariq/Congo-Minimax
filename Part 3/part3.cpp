@@ -1677,32 +1677,6 @@ int main()
 
         vector<string> river;
 
-        // // add pieces that are in the river to the river vector
-        // if (turnToPlay == "white")
-        // {
-        //     // loop through river on board which is row 3
-        //     // and look for pieces that are white 
-        //     for (int i = 0; i < 7; i++)
-        //     {
-        //         if (isWhite(board[3][i]))
-        //         {
-        //             river.insert(river.end(), board[3][i]);
-        //         }
-        //     }
-        // }
-        // else if (turnToPlay == "black")
-        // {
-        //     // loop through river on board which is row 3
-        //     // and look for pieces that are black 
-        //     for (int i = 0; i < 7; i++)
-        //     {
-        //         if (isBlack(board[3][i]))
-        //         {
-        //             river.insert(river.end(), board[3][i]);
-        //         }
-        //     }
-        // }
-
         // store a duplicate of the river in the river vector
         // loop through river
         for (int i = 0; i < 7; i++)
@@ -1774,41 +1748,6 @@ int main()
         {
             gameStatus = "Continue";
         }
-
-        // // check if pieces in the river have remained in the river
-        // // if so, remove them
-        // if (turnToPlay == "white")
-        // {
-        //     // loop through the river 
-        //     // if a piece in the river is in the river vector
-        //     // remove it from the board
-        //     for (int i = 0; i < river.size(); i++)
-        //     {
-        //         for (int j = 0; j < 7; j++)
-        //         {
-        //             if (board[3][j] == river[i])
-        //             {
-        //                 board[3][j] = " ";
-        //             }
-        //         }
-        //     }
-        // }
-        // else if (turnToPlay == "black")
-        // {
-        //     // loop through the river 
-        //     // if a piece in the river is in the river vector
-        //     // remove it from the board
-        //     for (int i = 0; i < river.size(); i++)
-        //     {
-        //         for (int j = 0; j < 7; j++)
-        //         {
-        //             if (board[3][j] == river[i])
-        //             {
-        //                 board[3][j] = " ";
-        //             }
-        //         }
-        //     }
-        // }
 
         // check if a piece has remained in the river
         // if so, remove it
