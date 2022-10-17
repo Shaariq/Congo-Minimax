@@ -1677,34 +1677,64 @@ int main()
 
         vector<string> river;
 
-        // add pieces that are in the river to the river vector
-        if (turnToPlay == "white")
+        // // add pieces that are in the river to the river vector
+        // if (turnToPlay == "white")
+        // {
+        //     // loop through river on board which is row 3
+        //     // and look for pieces that are white 
+        //     for (int i = 0; i < 7; i++)
+        //     {
+        //         if (isWhite(board[3][i]))
+        //         {
+        //             river.insert(river.end(), board[3][i]);
+        //         }
+        //     }
+        // }
+        // else if (turnToPlay == "black")
+        // {
+        //     // loop through river on board which is row 3
+        //     // and look for pieces that are black 
+        //     for (int i = 0; i < 7; i++)
+        //     {
+        //         if (isBlack(board[3][i]))
+        //         {
+        //             river.insert(river.end(), board[3][i]);
+        //         }
+        //     }
+        // }
+
+        // store a duplicate of the river in the river vector
+        // loop through river
+        for (int i = 0; i < 7; i++)
         {
-            // loop through river on board which is row 3
-            // and look for pieces that are white 
-            for (int i = 0; i < 7; i++)
-            {
-                if (isWhite(board[3][i]))
-                {
-                    river.insert(river.end(), board[3][i]);
-                }
-            }
-        }
-        else if (turnToPlay == "black")
-        {
-            // loop through river on board which is row 3
-            // and look for pieces that are black 
-            for (int i = 0; i < 7; i++)
-            {
-                if (isBlack(board[3][i]))
-                {
-                    river.insert(river.end(), board[3][i]);
-                }
-            }
+            river.insert(river.end(), board[3][i]);
         }
 
         board[startingRow][startingCol] = " ";
         board[endingRow][endingCol] = pieceToken;
+
+        // we need to see if a piece moved within the river
+        // if it did, we need to update the river vector
+        // if it didn't, we need to leave the river vector alone
+        // check if starting piece is in river
+        bool startedInRiver = false;
+        if (startingRow ==  3)
+        {
+            startedInRiver = true;
+        }
+        bool endedInRiver = false;
+        if (endingRow == 3)
+        {
+            endedInRiver = true;
+        }
+
+        // if the piece started in the river and ended in the river
+        // we need to update the river vector
+        if (startedInRiver && endedInRiver)
+        {
+            river[startingCol] = " ";
+            river[endingCol] = pieceToken;
+        }
 
         // check if there is a black lion on the board, return false if there is not a black lion
         bool blackLionExists = false;
@@ -1732,11 +1762,11 @@ int main()
             }
         }
 
-        if (!blackLionExists)
+        if (!blackLionExists && turnToPlay == "white")
         {
             gameStatus = "White wins";
         }
-        else if (!whiteLionExists)
+        else if (!whiteLionExists && turnToPlay == "black")
         {
             gameStatus = "Black wins";
         }
@@ -1745,49 +1775,59 @@ int main()
             gameStatus = "Continue";
         }
 
-        // check if pieces in the river have remained in the river
-        // if so, remove them
-        if (turnToPlay == "white")
-        {
-            // loop through the river 
-            // if a piece in the river is in the river vector
-            // remove it from the board
-            for (int i = 0; i < river.size(); i++)
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    if (board[3][j] == river[i])
-                    {
-                        board[3][j] = " ";
-                    }
-                }
-            }
-        }
-        else if (turnToPlay == "black")
-        {
-            // loop through the river 
-            // if a piece in the river is in the river vector
-            // remove it from the board
-            for (int i = 0; i < river.size(); i++)
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    if (board[3][j] == river[i])
-                    {
-                        board[3][j] = " ";
-                    }
-                }
-            }
-        }
+        // // check if pieces in the river have remained in the river
+        // // if so, remove them
+        // if (turnToPlay == "white")
+        // {
+        //     // loop through the river 
+        //     // if a piece in the river is in the river vector
+        //     // remove it from the board
+        //     for (int i = 0; i < river.size(); i++)
+        //     {
+        //         for (int j = 0; j < 7; j++)
+        //         {
+        //             if (board[3][j] == river[i])
+        //             {
+        //                 board[3][j] = " ";
+        //             }
+        //         }
+        //     }
+        // }
+        // else if (turnToPlay == "black")
+        // {
+        //     // loop through the river 
+        //     // if a piece in the river is in the river vector
+        //     // remove it from the board
+        //     for (int i = 0; i < river.size(); i++)
+        //     {
+        //         for (int j = 0; j < 7; j++)
+        //         {
+        //             if (board[3][j] == river[i])
+        //             {
+        //                 board[3][j] = " ";
+        //             }
+        //         }
+        //     }
+        // }
 
-        if (turnToPlay == "white")
+        // check if a piece has remained in the river
+        // if so, remove it
+        for (int i = 0; i < 7; i++)
         {
-            turnToPlay = "black";
-        }
-        else
-        {
-            moveCount++;
-            turnToPlay = "white";
+            if (turnToPlay == "white")
+            {
+                if (board[3][i] == river[i] && isWhite(board[3][i]))
+                {
+                    board[3][i] = " ";
+                }
+            }
+            else if (turnToPlay == "black")
+            {
+                if (board[3][i] == river[i] && isBlack(board[3][i]))
+                {
+                    board[3][i] = " ";
+                }
+            }
         }
 
         // loop through row 6, if there is a black pawn, change it to a black superpawn
@@ -1806,6 +1846,16 @@ int main()
             {
                 board[0][i] = "S";
             }
+        }
+
+        if (turnToPlay == "white")
+        {
+            turnToPlay = "black";
+        }
+        else
+        {
+            moveCount++;
+            turnToPlay = "white";
         }
 
         string FEN = convertToFenString(board);
