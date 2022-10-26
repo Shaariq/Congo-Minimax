@@ -1651,7 +1651,7 @@ vector<string> superpawnMoves(int row, int col, array<array<string, 7>, 7> board
     }
 }
 
-vector<string> getMoves(array<array<string, 7>, 7> board)
+vector<string> getMoves(array<array<string, 7>, 7> board, string turn)
 {
     vector<string> moves;
 
@@ -1660,7 +1660,7 @@ vector<string> getMoves(array<array<string, 7>, 7> board)
     // for each piece, call the appropriate function to get the moves
     // append the moves to the vector
 
-    if (turnToPlay == "white")
+    if (turn == "white")
     {
         for (int i = 0; i < board.size(); i++)
         {
@@ -1697,7 +1697,7 @@ vector<string> getMoves(array<array<string, 7>, 7> board)
             }
         }
     }
-    else if (turnToPlay == "black")
+    else if (turn == "black")
     {
         for (int i = 0; i < board.size(); i++)
         {
@@ -1705,7 +1705,12 @@ vector<string> getMoves(array<array<string, 7>, 7> board)
             {
                 if (isBlack(board[i][j]))
                 {
-                    if (board[i][j] == "p")
+                    if (board[i][j] == "l")
+                    {
+                        vector<string> lionMovesArr = lionMoves(i, j, board, "black");
+                        moves.insert(moves.end(), lionMovesArr.begin(), lionMovesArr.end());
+                    }
+                    else if (board[i][j] == "p")
                     {
                         vector<string> pawnMovesArr = pawnMoves(i, j, board, "black");
                         moves.insert(moves.end(), pawnMovesArr.begin(), pawnMovesArr.end());
@@ -1725,11 +1730,6 @@ vector<string> getMoves(array<array<string, 7>, 7> board)
                         vector<string> giraffeMovesArr = giraffeMoves(i, j, board, "black");
                         moves.insert(moves.end(), giraffeMovesArr.begin(), giraffeMovesArr.end());
                     }
-                    else if (board[i][j] == "l")
-                    {
-                        vector<string> lionMovesArr = lionMoves(i, j, board, "black");
-                        moves.insert(moves.end(), lionMovesArr.begin(), lionMovesArr.end());
-                    }
                 }
             }
         }
@@ -1739,7 +1739,7 @@ vector<string> getMoves(array<array<string, 7>, 7> board)
 }
 
 // This function will take in a move, execute it and return the new board
-array<array<string, 7>, 7> executeMove(string move, array<array<string, 7>, 7> board)
+array<array<string, 7>, 7> executeMove(string move, array<array<string, 7>, 7> board, string turn)
 {
     string startingPosition = move.substr(0, 2);
     string endingPosition = move.substr(2, 2);
@@ -1829,14 +1829,14 @@ array<array<string, 7>, 7> executeMove(string move, array<array<string, 7>, 7> b
     // if so, remove it
     for (int i = 0; i < 7; i++)
     {
-        if (turnToPlay == "white")
+        if (turn == "white")
         {
             if (board[3][i] == river[i] && isWhite(board[3][i]))
             {
                 board[3][i] = " ";
             }
         }
-        else if (turnToPlay == "black")
+        else if (turn == "black")
         {
             if (board[3][i] == river[i] && isBlack(board[3][i]))
             {
@@ -1863,20 +1863,20 @@ array<array<string, 7>, 7> executeMove(string move, array<array<string, 7>, 7> b
         }
     }
 
-    if (turnToPlay == "white")
-    {
-        turnToPlay = "black";
-    }
-    else
-    {
-        moveCount++;
-        turnToPlay = "white";
-    }
+    // if (turnToPlay == "white")
+    // {
+    //     turnToPlay = "black";
+    // }
+    // else
+    // {
+    //     moveCount++;
+    //     turnToPlay = "white";
+    // }
 
     return board;
 }
 
-int evaluation(array<array<string, 7>, 7> board)
+int evaluation(array<array<string, 7>, 7> board, string turn)
 {
     int score = 0;
 
@@ -1932,22 +1932,36 @@ int evaluation(array<array<string, 7>, 7> board)
         }
     }
 
-    if (blackLion == 1 && whiteLion == 1 && whitePieces == 0 && blackPieces == 0)
+    if (blackLion == 1 && whiteLion == 0)
     {
-        return 0;
-    }
-    else if (blackLion == 1 && whiteLion == 0)
-    {
-        return -10000;
+        if (turn == "white")
+        {
+            return -10000;
+        }
+        else
+        {
+            return 10000;
+        }
     }
     else if (blackLion == 0 && whiteLion == 1)
     {
-        return 10000;
+        if (turn == "white")
+        {
+            return 10000;
+        }
+        else
+        {
+            return -10000;
+        }
+    }
+    else if (blackLion == 1 && whiteLion == 1 && whitePieces == 0 && blackPieces == 0)
+    {
+        return 0;
     }
     else
     {
         score = whitePieces - blackPieces;
-        if (turnToPlay == "white")
+        if (turn == "white")
         {
             return score;
         }
@@ -1960,23 +1974,35 @@ int evaluation(array<array<string, 7>, 7> board)
 
 // Here we will implement a minimax search without alpha-beta pruning
 // We will search to a depth of 2
-int minimax(array<array<string, 7>, 7> board, int depth)
+int minimax(array<array<string, 7>, 7> board, int depth, string turn)
 {
-    int currScore = evaluation(board);
-    if (currScore == 0 || currScore == 10000 || currScore == -10000 || depth <= 0)
+    if (evaluation(board, turn) == 10000 || evaluation(board, turn) == -10000 || depth <= 0)
     {
-        return currScore;
+        return evaluation(board, turn);
     }
 
-    int value = -10000000;
+    int value = -1000000000;
 
-    vector<string> moves = getMoves(board);
+    vector<string> moves = getMoves(board, turn);
+
+    int count = 0;
+
+    string newTurn;
+
+    if (turn == "white")
+    {
+        newTurn = "black";
+    }
+    else
+    {
+        newTurn = "white";
+    }
 
     for (int i = 0; i < moves.size(); i++)
     {
-        array<array<string, 7>, 7> newBoard = executeMove(moves[i], board);
-        int score = -minimax(newBoard, depth - 1);
-        value = max(value, score);
+        array<array<string, 7>, 7> nextState = executeMove(moves[i], board, turn);
+        int eval = -1 * minimax(nextState, depth - 1, newTurn);
+        value = max(value, eval);
     }
     return value;
 }
@@ -1987,8 +2013,9 @@ int main()
     vector<string> fenStrings = readInput();
     for (int i = 0; i < fenStrings.size(); i++)
     {
+
         array<array<string, 7>, 7> board = processFenString(fenStrings[i]);
-        int score = minimax(board, 2);
+        int score = minimax(board, 2, turnToPlay);
         cout << score << endl;
     }
 

@@ -1708,17 +1708,31 @@ int evaluation(array<array<string, 7>, 7> board)
         }
     }
 
-    if (blackLion == 1 && whiteLion == 1 && whitePieces == 0 && blackPieces == 0)
+    if (blackLion == 1 && whiteLion == 0)
     {
-        return 0;
-    }
-    else if (blackLion == 1 && whiteLion == 0)
-    {
-        return -10000;
+        if (turnToPlay == "white")
+        {
+            return -10000;
+        }
+        else
+        {
+            return 10000;
+        }
     }
     else if (blackLion == 0 && whiteLion == 1)
     {
-        return 10000;
+        if (turnToPlay == "white")
+        {
+            return 10000;
+        }
+        else
+        {
+            return -10000;
+        }
+    }
+    else if (blackLion == 1 && whiteLion == 1 && whitePieces == 0 && blackPieces == 0)
+    {
+        return 0;
     }
     else
     {
